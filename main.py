@@ -1,3 +1,7 @@
+player1 = "X"
+player2 = "O"
+
+
 def new_board():
     board_holder = []
     for i in range(3):
@@ -20,8 +24,6 @@ def render(init_board):
         print()
         if i < 2:
             print("---+---+---")
-
-    print()
 
 
 def get_move():
@@ -75,9 +77,52 @@ def is_valid_move(init_board, coordinates):
     y, x = coordinates
     return init_board[y][x] is None
 
-board = new_board()
-board[0][0] = "x"
 
-move_coords = get_move()
+def get_winner(init_board):
+    if init_board[0][0] == init_board[0][1] and init_board[0][1] == init_board[0][2]: # Top Row
+        return init_board[0][0]
+    elif init_board[1][0] == init_board[1][1] and init_board[1][1] == init_board[1][2]: # Middle Row
+        return init_board[1][0]
+    elif init_board[2][0] == init_board[2][1] and init_board[2][1] == init_board[2][2]: # Bottom Row
+        return init_board[2][0]
+    elif init_board[0][0] == init_board[1][0] and init_board[1][0] == init_board[2][0]: # Left Column
+        return init_board[0][0]
+    elif init_board[0][1] == init_board[1][1] and init_board[1][1] == init_board[2][1]: # Middle Column
+        return init_board[0][1]
+    elif init_board[0][2] == init_board[1][2] and init_board[1][2] == init_board[2][2]: # Right Column
+        return init_board[0][2]
+    elif init_board[0][0] == init_board[1][1] and init_board[1][1] == init_board[2][2]: # Negative Diagonal
+        return init_board[0][0]
+    elif init_board[0][2] == init_board[1][1] and init_board[1][1] == init_board[2][0]: # Positive Diagonal
+        return init_board[0][2]
 
-board = make_move(board, move_coords, "x")
+    return None
+
+
+def run_game():
+    board = new_board()
+    render(board)
+    current_player = player1
+    turn = 1
+    while True:
+        if turn == 9:
+            print("It's  Draw. No one wins")
+            break
+        print(f"** {current_player} Turn **")
+        coords = get_move()
+        board = make_move(board, coords, current_player)
+        render(board)
+        winner = get_winner(board)
+
+        if winner is not None:
+            print(f"Player {winner} Won!!!")
+            break
+
+        if current_player == player1:
+            current_player = player2
+        else:
+            current_player = player1
+
+
+if __name__ == '__main__':
+    run_game()
