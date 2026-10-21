@@ -1,3 +1,5 @@
+import random
+
 player1 = "X"
 player2 = "O"
 
@@ -31,22 +33,22 @@ def get_move():
     y_move = None
     while True:
         try:
-            x_move = int(input("What is your x coordinate: "))
+            y_move = int(input("What is your y coordinate: "))
         except ValueError:
             print("\033[31m Enter a NUMBER \033[0m")
         else:
-            if not 0 <= x_move <= 2:
+            if not 0 <= y_move <= 2:
                 print("\033[31m Enter a number between 0-2 \033[0m")
             else:
                 break
 
     while True:
         try:
-            y_move = int(input("What is your y coordinate: "))
+            x_move = int(input("What is your x coordinate: "))
         except ValueError:
             print("\033[31m Enter a NUMBER \033[0m")
         else:
-            if not 0 <= y_move <= 2:
+            if not 0 <= x_move <= 2:
                 print("\033[31m Enter a number between 0-2 \033[0m")
             else:
                 break
@@ -79,37 +81,49 @@ def is_valid_move(init_board, coordinates):
 
 
 def get_winner(init_board):
-    if init_board[0][0] == init_board[0][1] and init_board[0][1] == init_board[0][2]: # Top Row
+    if init_board[0][0] == init_board[0][1] and init_board[0][1] == init_board[0][2]:  # Top Row
         return init_board[0][0]
-    elif init_board[1][0] == init_board[1][1] and init_board[1][1] == init_board[1][2]: # Middle Row
+    elif init_board[1][0] == init_board[1][1] and init_board[1][1] == init_board[1][2]:  # Middle Row
         return init_board[1][0]
-    elif init_board[2][0] == init_board[2][1] and init_board[2][1] == init_board[2][2]: # Bottom Row
+    elif init_board[2][0] == init_board[2][1] and init_board[2][1] == init_board[2][2]:  # Bottom Row
         return init_board[2][0]
-    elif init_board[0][0] == init_board[1][0] and init_board[1][0] == init_board[2][0]: # Left Column
+    elif init_board[0][0] == init_board[1][0] and init_board[1][0] == init_board[2][0]:  # Left Column
         return init_board[0][0]
-    elif init_board[0][1] == init_board[1][1] and init_board[1][1] == init_board[2][1]: # Middle Column
+    elif init_board[0][1] == init_board[1][1] and init_board[1][1] == init_board[2][1]:  # Middle Column
         return init_board[0][1]
-    elif init_board[0][2] == init_board[1][2] and init_board[1][2] == init_board[2][2]: # Right Column
+    elif init_board[0][2] == init_board[1][2] and init_board[1][2] == init_board[2][2]:  # Right Column
         return init_board[0][2]
-    elif init_board[0][0] == init_board[1][1] and init_board[1][1] == init_board[2][2]: # Negative Diagonal
+    elif init_board[0][0] == init_board[1][1] and init_board[1][1] == init_board[2][2]:  # Negative Diagonal
         return init_board[0][0]
-    elif init_board[0][2] == init_board[1][1] and init_board[1][1] == init_board[2][0]: # Positive Diagonal
+    elif init_board[0][2] == init_board[1][1] and init_board[1][1] == init_board[2][0]:  # Positive Diagonal
         return init_board[0][2]
 
     return None
+
+
+def random_ai(init_board, player):
+    legal_moves = []
+    for i in range(3):
+        for j in range(3):
+            if init_board[i][j] is None:
+                legal_moves.append((i, j))
+
+
+    return random.choice(legal_moves)
 
 
 def run_game():
     board = new_board()
     render(board)
     current_player = player1
-    turn = 1
+    turn = 0
     while True:
         if turn == 9:
             print("It's  Draw. No one wins")
             break
         print(f"** {current_player} Turn **")
-        coords = get_move()
+        # coords = get_move()
+        coords = random_ai(board, current_player)
         board = make_move(board, coords, current_player)
         render(board)
         winner = get_winner(board)
@@ -122,6 +136,8 @@ def run_game():
             current_player = player2
         else:
             current_player = player1
+
+        turn += 1
 
 
 if __name__ == '__main__':
