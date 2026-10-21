@@ -81,21 +81,21 @@ def is_valid_move(init_board, coordinates):
 
 
 def get_winner(init_board):
-    if init_board[0][0] == init_board[0][1] and init_board[0][1] == init_board[0][2]:  # Top Row
+    if init_board[0][0] is not None and init_board[0][0] == init_board[0][1] and init_board[0][1] == init_board[0][2]:  # Top Row
         return init_board[0][0]
-    elif init_board[1][0] == init_board[1][1] and init_board[1][1] == init_board[1][2]:  # Middle Row
+    elif init_board[1][0] is not None and init_board[1][0] == init_board[1][1] and init_board[1][1] == init_board[1][2]:  # Middle Row
         return init_board[1][0]
-    elif init_board[2][0] == init_board[2][1] and init_board[2][1] == init_board[2][2]:  # Bottom Row
+    elif init_board[2][0] is not None and init_board[2][0] == init_board[2][1] and init_board[2][1] == init_board[2][2]:  # Bottom Row
         return init_board[2][0]
-    elif init_board[0][0] == init_board[1][0] and init_board[1][0] == init_board[2][0]:  # Left Column
+    elif init_board[0][0] is not None and init_board[0][0] == init_board[1][0] and init_board[1][0] == init_board[2][0]:  # Left Column
         return init_board[0][0]
-    elif init_board[0][1] == init_board[1][1] and init_board[1][1] == init_board[2][1]:  # Middle Column
+    elif init_board[0][1] is not None and init_board[0][1] == init_board[1][1] and init_board[1][1] == init_board[2][1]:  # Middle Column
         return init_board[0][1]
-    elif init_board[0][2] == init_board[1][2] and init_board[1][2] == init_board[2][2]:  # Right Column
+    elif init_board[0][2] is not None and init_board[0][2] == init_board[1][2] and init_board[1][2] == init_board[2][2]:  # Right Column
         return init_board[0][2]
-    elif init_board[0][0] == init_board[1][1] and init_board[1][1] == init_board[2][2]:  # Negative Diagonal
+    elif init_board[0][0] is not None and init_board[0][0] == init_board[1][1] and init_board[1][1] == init_board[2][2]:  # Negative Diagonal
         return init_board[0][0]
-    elif init_board[0][2] == init_board[1][1] and init_board[1][1] == init_board[2][0]:  # Positive Diagonal
+    elif init_board[0][2] is not None and init_board[0][2] == init_board[1][1] and init_board[1][1] == init_board[2][0]:  # Positive Diagonal
         return init_board[0][2]
 
     return None
