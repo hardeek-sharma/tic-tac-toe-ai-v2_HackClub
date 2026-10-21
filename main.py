@@ -127,19 +127,46 @@ def finds_winning_moves_ai(init_board, player):
     return random.choice(legal_moves)
 
 
+def finds_winning_and_losing_moves_ai(init_board, player):
+    legal_moves = find_legal_moves(init_board)
+    for move in legal_moves:
+        i, j = move
+        init_board[i][j] = player
+        if get_winner(init_board) is not None:
+            init_board[i][j] = None
+            return move
+        init_board[i][j] = None
+
+    if player == player1:
+        player = player2
+    else:
+        player = player1
+
+    for move in legal_moves:
+        i, j = move
+        init_board[i][j] = player
+        if get_winner(init_board) is not None:
+            init_board[i][j] = None
+            return move
+        init_board[i][j] = None
+
+    return random.choice(legal_moves)
+
+
+
 def run_game():
     board = new_board()
     render(board)
-    current_player = player1
-    turn = 0
+    current_player = player2
     while True:
-        if turn == 9:
-            print("It's  Draw. No one wins")
+        if not find_legal_moves(board):
+            print("It's Draw. No one wins")
             break
         print(f"** {current_player} Turn **")
         # coords = get_move()
         # coords = random_ai(board, current_player)
-        coords = finds_winning_moves_ai(board, current_player)
+        # coords = finds_winning_moves_ai(board, current_player)
+        coords = finds_winning_and_losing_moves_ai(board, current_player)
         board = make_move(board, coords, current_player)
         render(board)
         winner = get_winner(board)
@@ -152,8 +179,6 @@ def run_game():
             current_player = player2
         else:
             current_player = player1
-
-        turn += 1
 
 
 if __name__ == '__main__':
