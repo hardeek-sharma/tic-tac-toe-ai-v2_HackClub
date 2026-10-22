@@ -28,7 +28,7 @@ def render(init_board):
             print("---+---+---")
 
 
-def get_move():
+def human_player(init_board, player):
     x_move = None
     y_move = None
     while True:
@@ -61,7 +61,7 @@ def make_move(init_board, coordinates, player):
         if is_valid_move(init_board, coordinates):
             break
         print("\033[31m That spot is already taken. Choose again \033[0m")
-        coordinates = get_move()
+        coordinates = human_player(init_board, player)
 
     board_holder = []
     for i in range(3):
@@ -163,7 +163,7 @@ def run_game():
             print("It's Draw. No one wins")
             break
         print(f"** {current_player} Turn **")
-        # coords = get_move()
+        # coords = human_player(board, current_player)
         # coords = random_ai(board, current_player)
         # coords = finds_winning_moves_ai(board, current_player)
         coords = finds_winning_and_losing_moves_ai(board, current_player)
