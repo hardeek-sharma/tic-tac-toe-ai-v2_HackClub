@@ -115,6 +115,22 @@ def random_ai(init_board, player):
     return random.choice(legal_moves)
 
 
+def get_player_mode(player):
+    print("(1. Human 2. Dumb Bot 3. Smart Bot 4. Genius Bot)")
+    while True:
+        try:
+            player_mode = int(input(f"What should player '{player}' be: "))
+        except ValueError:
+            print("\033[31m Enter a NUMBER 1-4 \033[0m")
+        else:
+            if not 1 <= player_mode <= 4:
+                print("\033[31m Enter a number between 1-4 \033[0m")
+            else:
+                break
+    return player_mode
+
+
+
 def finds_winning_moves_ai(init_board, player):
     legal_moves = find_legal_moves(init_board)
     for move in legal_moves:
@@ -156,17 +172,40 @@ def finds_winning_and_losing_moves_ai(init_board, player):
 
 def run_game():
     board = new_board()
+    coords = None
+
+    current_player = player1
+    player1_mode = get_player_mode(player1)
+    player2_mode = get_player_mode(player2)
     render(board)
-    current_player = player2
     while True:
         if not find_legal_moves(board):
             print("It's Draw. No one wins")
             break
         print(f"** {current_player} Turn **")
+        if current_player == player1:
+            if player1_mode == 1:
+                coords = human_player(board, current_player)
+            elif player1_mode == 2:
+                coords = random_ai(board, current_player)
+            elif player1_mode == 3:
+                coords = finds_winning_moves_ai(board, current_player)
+            elif player1_mode == 4:
+                coords = finds_winning_and_losing_moves_ai(board, current_player)
+        elif current_player == player2:
+            if player2_mode == 1:
+                coords = human_player(board, current_player)
+            elif player2_mode == 2:
+                coords = random_ai(board, current_player)
+            elif player2_mode == 3:
+                coords = finds_winning_moves_ai(board, current_player)
+            elif player2_mode == 4:
+                coords = finds_winning_and_losing_moves_ai(board, current_player)
+
         # coords = human_player(board, current_player)
         # coords = random_ai(board, current_player)
         # coords = finds_winning_moves_ai(board, current_player)
-        coords = finds_winning_and_losing_moves_ai(board, current_player)
+        # coords = finds_winning_and_losing_moves_ai(board, current_player)
         board = make_move(board, coords, current_player)
         render(board)
         winner = get_winner(board)
