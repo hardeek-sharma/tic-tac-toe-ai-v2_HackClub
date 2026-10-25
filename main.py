@@ -205,6 +205,18 @@ def minimax_score(init_board, player_to_move, player_to_optimize):
         return min(scores)
 
 
+cache = {}
+
+def minimax_score_with_cache(init_board, player_to_move, player_to_optimize):
+    board_cache_key = str(init_board)
+
+    if board_cache_key not in cache:
+        score = minimax_score(init_board, player_to_move, player_to_optimize)
+
+        cache[board_cache_key] = score
+
+    return cache[board_cache_key]
+
 def minimax_ai(init_board, player):
     best_move = None
     best_score = None
@@ -214,7 +226,7 @@ def minimax_ai(init_board, player):
     for move in legal_moves:
         board_holder = make_move(init_board, move, player)
         opponent = get_opponent(player)
-        score = minimax_score(board_holder, opponent, player)
+        score = minimax_score_with_cache(board_holder, opponent, player)
 
         if best_score is None or score > best_score:
             best_move = move
