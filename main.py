@@ -181,14 +181,16 @@ def get_opponent(player):
     return None
 
 
-def minimax_score(init_board, player_to_move, player_to_optimize):
+def minimax_score(init_board, player_to_move, player_to_optimize, depth):
     legal_moves = find_legal_moves(init_board)
     winner = get_winner(init_board)
+    depth += 1
+
     if winner is not None:
         if winner == player_to_optimize:
-            return 10
+            return 10 - depth
         else:
-            return -10
+            return depth - 10
     if not find_legal_moves(init_board):
         return 0
 
@@ -196,7 +198,7 @@ def minimax_score(init_board, player_to_move, player_to_optimize):
     for move in legal_moves:
         board_holder = make_move(init_board, move, player_to_move)
         opponent = get_opponent(player_to_move)
-        score = minimax_score(board_holder, opponent, player_to_optimize)
+        score = minimax_score(board_holder, opponent, player_to_optimize, depth)
         scores.append(score)
 
     if player_to_move == player_to_optimize:
@@ -207,11 +209,11 @@ def minimax_score(init_board, player_to_move, player_to_optimize):
 
 cache = {}
 
-def minimax_score_with_cache(init_board, player_to_move, player_to_optimize):
+def minimax_score_with_cache(init_board, player_to_move, player_to_optimize, depth):
     board_cache_key = str(init_board)
 
     if board_cache_key not in cache:
-        score = minimax_score(init_board, player_to_move, player_to_optimize)
+        score = minimax_score(init_board, player_to_move, player_to_optimize, depth)
 
         cache[board_cache_key] = score
 
@@ -226,7 +228,7 @@ def minimax_ai(init_board, player):
     for move in legal_moves:
         board_holder = make_move(init_board, move, player)
         opponent = get_opponent(player)
-        score = minimax_score_with_cache(board_holder, opponent, player)
+        score = minimax_score_with_cache(board_holder, opponent, player, 0)
 
         if best_score is None or score > best_score:
             best_move = move
@@ -286,4 +288,11 @@ def run_game():
 
 
 if __name__ == '__main__':
-    run_game()
+    # run_game()
+    board = [[None, player1, None],
+             [None, None, player1],
+             [player2, player2, player1]]
+
+    move = minimax_ai(board, player2)
+
+    render(make_move(board, move, player2))
