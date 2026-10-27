@@ -288,11 +288,4 @@ def run_game():
 
 
 if __name__ == '__main__':
-    # run_game()
-    board = [[None, player1, None],
-             [None, None, player1],
-             [player2, player2, player1]]
-
-    move = minimax_ai(board, player2)
-
-    render(make_move(board, move, player2))
+    run_game()
